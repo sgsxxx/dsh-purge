@@ -1,0 +1,22 @@
+name: Upstream Sync
+on:
+  schedule:
+    # 每天北京时间 08:00 自动执行一次同步
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 支持在网页上随时手动点击立即运行
+
+permissions:
+  contents: write
+
+jobs:
+  sync_latest_from_upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync upstream changes
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+        with:
+          upstream_sync_repo: kingcharleszhy-ai/dsh-purge
+          upstream_sync_branch: master
+          target_sync_branch: master
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
